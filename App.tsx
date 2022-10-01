@@ -1,12 +1,28 @@
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+import {TailwindProvider} from 'tailwind-rn';
+import CustomersScreen from './screens/CustomersScreen';
+import utilities from './tailwind.json';
+import { NavigationContainer } from '@react-navigation/native';
+import RootNavigator from './navigator/RootNavigator';
+import { ApolloClient, InMemoryCache, ApolloProvider} from "@apollo/client";
+
+const client = new ApolloClient ({
+  uri: "http://10.0.0.162:5001/api/halting-tuatara",
+  cache: new InMemoryCache(),
+})
+
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    //@ts-ignore
+    
+      <TailwindProvider utilities={utilities}>
+        <ApolloProvider client={client}>
+          <NavigationContainer>
+            <RootNavigator />
+        </NavigationContainer>
+      </ApolloProvider>
+    </TailwindProvider>
   );
 }
 
